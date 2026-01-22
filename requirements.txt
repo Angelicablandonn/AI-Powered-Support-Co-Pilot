@@ -3,7 +3,7 @@ uvicorn
 langchain
 langchain-community
 langchain-huggingface
-huggingface_hub
+huggingface-hub
 transformers
 torch
 supabase
