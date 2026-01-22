@@ -1,5 +1,5 @@
 # Imagen base ligera y estable
-FROM python:3.11-slim
+FROM python:3.10-slim
 
 # Evita que Python genere .pyc y buffer
 ENV PYTHONDONTWRITEBYTECODE=1
