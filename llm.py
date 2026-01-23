@@ -1,8 +1,8 @@
 import os
 import json
 from langchain_community.llms import HuggingFaceHub
+from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
 
 def classify_ticket(text: str) -> dict:
     llm = HuggingFaceHub(
@@ -27,7 +27,11 @@ Formato:
 """
     )
 
-    chain = prompt | llm | StrOutputParser()
+    chain = LLMChain(llm=llm, prompt=prompt)
+    response = chain.run(text=text)
+
+    return json.loads(response)
+
 
     response = chain.invoke({"text": text})
 
