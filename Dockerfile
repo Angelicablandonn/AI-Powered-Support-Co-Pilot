@@ -1,31 +1,25 @@
-# Imagen base ligera y estable
 FROM python:3.10-slim
 
-# Evita que Python genere .pyc y buffer
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Dependencias del sistema (necesarias para algunas libs de IA)
+# Dependencias del sistema
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiamos requirements primero (mejora el cache)
+# Copiamos requirements primero
 COPY requirements.txt .
 
-# Instalamos dependencias de Python
+# Instalamos dependencias
 RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
-# Copiamos todo el código de la app
+# Copiamos la app
 COPY . .
 
-# Puerto expuesto (Render usa el que indiquemos)
-EXPOSE 8000
-
-# Comando de arranque
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Render usa este puerto
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT
